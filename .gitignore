@@ -1,3 +1,6 @@
+# 本仓库按 backend / frontend 分支拆分；切换分支时工作区可能残留另一侧目录，
+# 因此保留跨侧通用忽略规则，避免 .env / *.db / node_modules 被误提交。
+
 # 凭据与本地数据
 .env
 .env.*
