@@ -6,6 +6,25 @@
 
 > 当前状态：本地原型，不含部署、鉴权与多租户；未做线上发布。
 
+## 分支结构与协作方式
+
+本仓库采用「一个集成基线 + 两个独立工程分支」：
+
+| 分支 | 内容 | 定位 |
+| --- | --- | --- |
+| `main` | `backend/` + `frontend/` 全量 | 默认分支、集成基线，按本文档一次启动即可跑通全链路 |
+| `backend` | 仅 `backend/` | 后端独立工程视图，README 面向后端开发 / 测试 / 运行 |
+| `frontend` | 仅 `frontend/` | 前端独立工程视图，README 面向前端开发 / 构建 / 预览 |
+
+两侧遵循前后端分离的工程约定：
+
+- 各自独立依赖（`requirements.txt` / `pyproject.toml` 与 `package.json`）、独立启动与构建，不共享源码
+- 唯一协作边界是 HTTP 契约：前端 `src/api/client.js` 的 `BASE = '/api/v1'`，开发期由 `vite.config.js` 把 `/api` 代理到 `127.0.0.1:8000`；后端 CORS 白名单见 `conf/app_config.yaml`
+- 契约以运行后端的 `/docs`（OpenAPI）与 `app/schemas/agent.py` 为准；`/runs` 与 `/graph/runs/stream` 返回 `text/event-stream`
+- 接口变更顺序：**先改后端契约，再同步前端调用方**
+
+> 说明：行业里分支通常按版本 / 功能划分（main / develop / feature），按技术层拆分会让「一次跑通全链路」变困难。因此这里保留 `main` 全量基线，两个拆分分支作为可分别交付与部署的独立工程视图；日常开发仍建议在 `main` 或功能分支上进行。三个分支的 `.gitignore` 都保留跨侧通用忽略规则，避免切换分支时残留的 `.env` / `node_modules` / `*.db` 被误提交。
+
 ## 能力概览
 
 - 数据接入：CSV 上传（≤ 10 MB）、一键生成带已知异常尖峰的示例数据、数据集列表 / 删除
@@ -26,6 +45,8 @@
 | 其他 | 自研护栏、SSE 事件流、Skill 包、MCP client、RAG 索引（本地哈希 embedding） |
 
 ## 目录结构
+
+以下为 `main` 分支的全量结构；`backend` / `frontend` 分支各只保留对应目录与专属 README、`.gitignore`。
 
 ```text
 data-analysis-agent/
