@@ -1,0 +1,34 @@
+# 凭据与本地数据
+.env
+.env.*
+!.env.example
+backend/data/
+backend/logs/
+*.log
+*.db
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node / Vue
+node_modules/
+frontend/dist/
+dist/
+.vite/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 本地数据库副本
+*.sqlite3
